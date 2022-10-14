@@ -1,8 +1,9 @@
 from http.client import HTTPResponse
 from django.http import HttpResponse
+from django.shortcuts import render
 
 def index(request):
-    return HttpResponse("hello world")
+    return render(request,"blog/index.html")
 
 def detail(request):
     return HttpResponse("detail page")
