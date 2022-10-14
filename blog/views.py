@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from http.client import HTTPResponse
+from django.http import HttpResponse
 
-# Create your views here.
+def index(request):
+    return HTTPResponse("hello world")
+
+def detail(request):
+    return HttpResponse("detail page")
