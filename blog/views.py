@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -38,6 +38,10 @@ class AccountLoginView(LoginView):
     def get_default_redirect_url(self):
         """ログインに成功した時に飛ばされるURL"""
         return "/blog"
+
+
+class AccountLogoutView(LogoutView):
+    template_name = 'blog/logout.html'
 
 
 class MypageView(LoginRequiredMixin, View):
