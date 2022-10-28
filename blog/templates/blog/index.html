@@ -2,11 +2,14 @@
 <div>
     {% if user.is_authenticated %}
     {{ user.username }} さん
+    <div><a href="mypage">マイページ</a></div>
     {% else %}
     ログインしていません
     <div>
-        <a href="blog/register">アカウント登録</a>
+        <a href="/blog/register">アカウント登録</a>
     </div>
+
+    <a href="login">ログイン</a>
     
     {% endif %}
 </div>
