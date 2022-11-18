@@ -15,4 +15,5 @@ urlpatterns = [
          name="mypage-new-article"),
     path("mypage/articles", views.MypageArticleView.as_view(),
          name="mypage-articles"),
+    path("articles/<id>", views.ArticleView.as_view(), name="article"),
 ]

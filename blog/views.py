@@ -6,10 +6,23 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.models import Article
+from blog.qiita import QiitaApiClient
 
 
 def index(request):
-    return render(request, "blog/index.html")
+    # Article の model を使ってすべての記事を取得する
+    # Article.objects.all() は article のリストが返ってくる
+    articles = Article.objects.all()
+
+    # qiita API へのリクエスト処理を追加
+    qiita_api = QiitaApiClient()
+    qiita_api.get_django_articles()
+
+    # こうすることで、article 変数をテンプレートにわたす事ができる
+    # {テンプレート上での変数名: 渡す変数}
+    return render(request, "blog/index.html", {
+        "articles": articles
+    })
 
 
 def detail(request):
@@ -75,3 +88,29 @@ class MypageArticleView(LoginRequiredMixin, View):
         )
         article.save()
         return render(request, "blog/article_created.html")
+
+
+class ArticleView(View):
+    # urls.py の <id> が、 id に入る
+
+    def get(self, request, id):
+        # get は条件に合致した記事を一つ取得する
+        article = Article.objects.get(id=id)
+        return render(request, "blog/article.html", {
+            "article": article,
+        })
+
+
+class MypageView(LoginRequiredMixin, View):
+    login_url = '/blog/login'
+
+    def get(self, request):
+        articles = Article.objects.filter(user=request.user)
+        return render(request, "blog/mypage.html", {
+            "articles": articles
+        })
+# def get(self,request):
+#     articles=Article.objects.filter(user=request.user)
+#     return render(request, "blog/mypage.html", {
+#         "articles":articles
+#     })

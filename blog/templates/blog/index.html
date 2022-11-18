@@ -1,4 +1,8 @@
-<h1>Hello, world.</h1>
+
+<html>
+
+<body>
+    <h1>トップページ</h1>
 <div>
     {% if user.is_authenticated %}
     {{ user.username }} さん
@@ -12,7 +16,11 @@
     <a href="login">ログイン</a>
     
     {% endif %}
-</div>
-<div>
-    <a href="/blog/detail">detail</a>
-</div>
+    <h2>投稿された記事一覧</h2>
+    {% for article in articles %}
+        <a href="/blog/articles/{{ article.id }}">
+            <div>{{ article.title }}</div>
+        </a>
+    {% endfor %}
+</body>
+</html>

@@ -7,8 +7,19 @@
 <body>
     <h1>マイページ</h1>
     <div>ユーザー名: {{ user.username }}</div>
-    <a href='mypage/new-article'>記事編集</a>
+
+    <a href="/blog">トップページ</a>
+    <a href='mypage/new-article'>記事投稿ページ</a>
     <a href='logout'>ログアウト</a>
+    
+    <h2>自分が投稿した記事</h2>
+    <div>
+        {% for article in articles %}
+        <a href="/blog/articles/{{article.id}}">
+            <div>{{article.title}}</div>
+        </a>
+    </div>
+    {%endfor%}
 </body>
 
 </html>
