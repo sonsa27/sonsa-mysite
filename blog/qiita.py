@@ -1,4 +1,5 @@
 import requests
+import random
 
 
 class QiitaApiClient:
@@ -9,13 +10,28 @@ class QiitaApiClient:
         response = requests.get(
             "https://qiita.com/api/v2/tags/django/items",
             headers={
-                "Authorization": "Bearer"},
+                "Authorization": "Bearer 94e6ca5d87d111cb593369642d261581c3af62bd"},
         )
 
         # アクセストークンがない場合はこう
         # response = requests.get("https://qiita.com/api/v2/tags/django/items")
-
-        # とりあえず print してみる
-        # response.json() で json 形式のレスポンスの中身が見られる
+        # 画面の初期化
+        qiita_articles = []
+        # jsonはlist型（qiitaの投稿リスト）
         json = response.json()
-        print(json[0]['title'])
+        # json_articleはdict型
+        for json_article in json:
+            # dictから取り出す
+            qiita_article = QiitaArticle(
+                json_article["title"],
+                json_article["url"],
+            )
+            qiita_articles.append(qiita_article)
+        return qiita_articles
+
+
+class QiitaArticle:
+
+    def __init__(self, title, url):
+        self.title = title
+        self.url = url
