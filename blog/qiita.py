@@ -9,7 +9,7 @@ class QiitaApiClient:
         response = requests.get(
             "https://qiita.com/api/v2/tags/django/items",
             headers={
-                "Authorization": "Bearer 94e6ca5d87d111cb593369642d261581c3af62bd"},
+                "Authorization": ""},
         )
 
         # アクセストークンがない場合はこう
