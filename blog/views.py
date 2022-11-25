@@ -18,10 +18,20 @@ def index(request):
     qiita_api = QiitaApiClient()
     qiita_api.get_django_articles()
 
+    is_qiita_error = False
+
+    qiita_articles = []
+    try:
+        qiita_articles = qiita_api.get_django_articles()
+    except RuntimeError:
+        is_qiita_error = True
+
     # こうすることで、article 変数をテンプレートにわたす事ができる
     # {テンプレート上での変数名: 渡す変数}
     return render(request, "blog/index.html", {
-        "articles": articles
+        "articles": articles,
+        "qiita_articles": qiita_articles,
+        "is_qiita_error": is_qiita_error,
     })
 
 
