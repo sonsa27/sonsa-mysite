@@ -16,4 +16,5 @@ urlpatterns = [
     path("mypage/articles", views.MypageArticleView.as_view(),
          name="mypage-articles"),
     path("articles/<id>", views.ArticleView.as_view(), name="article"),
+    path("mypage/api/articles", views.ArticleApiView.as_view(), name="api-articles"),
 ]
