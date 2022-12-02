@@ -17,4 +17,6 @@ urlpatterns = [
          name="mypage-articles"),
     path("articles/<id>", views.ArticleView.as_view(), name="article"),
     path("mypage/api/articles", views.ArticleApiView.as_view(), name="api-articles"),
+    path("api/articles/<article_id>/comments",
+         views.CommentApiView.as_view(), name="api-articles-comments"),
 ]

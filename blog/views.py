@@ -5,9 +5,10 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from blog.models import Article
+from blog.models import Article, Comment
 from blog.qiita import QiitaApiClient
 from django.http import JsonResponse
+import json
 
 
 def index(request):
@@ -32,7 +33,7 @@ def index(request):
     return render(request, "blog/index.html", {
         "articles": articles,
         "qiita_articles": qiita_articles,
-        "is_qiita_error": is_qiita_error,
+        "is_qiita_error": is_qiita_error
     })
 
 
@@ -143,3 +144,42 @@ class ArticleApiView(View):
             "articles": dict_articles,
         }
         return JsonResponse(json)
+
+    # post を追加
+    def post(self, request):
+        # リクエストボディに入っている JSON 形式の文字列を
+        # list や dict に変換してくれる
+        json_dict = json.loads(request.body)
+
+        # 保存は今まで通り
+        article = Article(
+            title=json_dict["title"],
+            body=json_dict["body"],
+            # user には、現在ログイン中のユーザーをセットする
+            user=request.user,
+        )
+        article.save()
+
+        return JsonResponse({
+            "message": "記事の投稿に成功しました"
+        })
+
+
+class CommentApiView(View):
+    def post(self, request, article_id):
+        json_dict = json.loads(request.body)
+
+        # 渡された article_id から article を取得
+        article = Article.objects.get(id=article_id)
+
+        # article からコメントを作成して保存
+        comment = Comment(
+            body=json_dict["body"],
+            article=article,
+            user=request.user
+        )
+        comment.save()
+
+        return JsonResponse({
+            "message": "コメントの投稿に成功しました"
+        })
